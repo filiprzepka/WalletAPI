@@ -19,6 +19,12 @@ namespace WalletAPI
         {
             if (_dbContext.Database.CanConnect())
             {
+                if (!_dbContext.Roles.Any())
+                {
+                    var roles = GetRoles();
+                    _dbContext.Roles.AddRange(roles);
+                    _dbContext.SaveChanges();
+                }
                 if (!_dbContext.Months.Any())
                 {
                     var months = GetMonths();
@@ -26,6 +32,21 @@ namespace WalletAPI
                     _dbContext.SaveChanges();
                 }
             }
+        }
+        private IEnumerable<Role> GetRoles() 
+        {
+            var roles = new List<Role>()
+            {
+                new Role()
+                {
+                    Name = "User"
+                },
+                new Role()
+                {
+                    Name = "Admin"
+                },
+            };
+            return roles;
         }
 
         private IEnumerable<Month> GetMonths()
@@ -37,24 +58,24 @@ namespace WalletAPI
                     Name = "August",
                     BeginningOfTheMonth = new DateTime(2022, 08, 01),
                     EndOfTheMonth = new DateTime(2022, 08, 31),
-                    Payments = new List<Payment>()
+                    Expenses = new List<Expense>()
                     {
-                        new Payment()
+                        new Expense()
                         {
                             Name = "Dentist",
                             Amount = 150,
                             DayOfTransaction = new DateTime(2022,08,15)
                         },
-                        new Payment()
+                        new Expense()
                         {
                             Name = "Groceries",
                             Amount = 100,
                             DayOfTransaction = new DateTime(2022,08,20)
                         },
                     },
-                    Salaries = new List<Salary>()
+                    Incomes = new List<Income>()
                     {
-                        new Salary()
+                        new Income()
                         {
                             Name = "Job salary",
                             Amount = 4000,
@@ -67,24 +88,24 @@ namespace WalletAPI
                     Name = "September",
                     BeginningOfTheMonth = new DateTime(2022, 09, 01),
                     EndOfTheMonth = new DateTime(2022, 09, 30),
-                    Payments = new List<Payment>()
+                    Expenses = new List<Expense>()
                     {
-                        new Payment()
+                        new Expense()
                         {
                             Name = "Dentist",
                             Amount = 200,
                             DayOfTransaction = new DateTime(2022,09,15)
                         },
-                        new Payment()
+                        new Expense()
                         {
                             Name = "Groceries",
                             Amount = 300,
                             DayOfTransaction = new DateTime(2022,09,20)
                         },
                     },
-                    Salaries = new List<Salary>()
+                    Incomes = new List<Income>()
                     {
-                        new Salary()
+                        new Income()
                         {
                             Name = "Job salary",
                             Amount = 4000,

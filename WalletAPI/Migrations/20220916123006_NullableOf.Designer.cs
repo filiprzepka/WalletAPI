@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WalletAPI.Entities;
 
@@ -11,9 +12,10 @@ using WalletAPI.Entities;
 namespace WalletAPI.Migrations
 {
     [DbContext(typeof(WalletDBContext))]
-    partial class WalletDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220916123006_NullableOf")]
+    partial class NullableOf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,76 +23,6 @@ namespace WalletAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("WalletAPI.Entities.Expense", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("DayOfTransaction")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MonthID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MonthID");
-
-                    b.ToTable("Expenses");
-                });
-
-            modelBuilder.Entity("WalletAPI.Entities.Income", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("DayOfTransaction")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MonthID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MonthID");
-
-                    b.ToTable("Incomes");
-                });
 
             modelBuilder.Entity("WalletAPI.Entities.Month", b =>
                 {
@@ -111,12 +43,41 @@ namespace WalletAPI.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Months");
+                });
+
+            modelBuilder.Entity("WalletAPI.Entities.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DayOfTransaction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MonthID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MonthID");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("WalletAPI.Entities.Role", b =>
@@ -134,6 +95,38 @@ namespace WalletAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("WalletAPI.Entities.Salary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DayOfTransaction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MonthID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MonthID");
+
+                    b.ToTable("Salaries");
                 });
 
             modelBuilder.Entity("WalletAPI.Entities.User", b =>
@@ -170,10 +163,10 @@ namespace WalletAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WalletAPI.Entities.Expense", b =>
+            modelBuilder.Entity("WalletAPI.Entities.Payment", b =>
                 {
                     b.HasOne("WalletAPI.Entities.Month", "Month")
-                        .WithMany("Expenses")
+                        .WithMany("Payments")
                         .HasForeignKey("MonthID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -181,10 +174,10 @@ namespace WalletAPI.Migrations
                     b.Navigation("Month");
                 });
 
-            modelBuilder.Entity("WalletAPI.Entities.Income", b =>
+            modelBuilder.Entity("WalletAPI.Entities.Salary", b =>
                 {
                     b.HasOne("WalletAPI.Entities.Month", "Month")
-                        .WithMany("Incomes")
+                        .WithMany("Salaries")
                         .HasForeignKey("MonthID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -205,9 +198,9 @@ namespace WalletAPI.Migrations
 
             modelBuilder.Entity("WalletAPI.Entities.Month", b =>
                 {
-                    b.Navigation("Expenses");
+                    b.Navigation("Payments");
 
-                    b.Navigation("Incomes");
+                    b.Navigation("Salaries");
                 });
 #pragma warning restore 612, 618
         }

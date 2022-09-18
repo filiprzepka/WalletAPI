@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WalletAPI.Entities
+namespace WalletAPI.Models
 {
-    public class Payment
+    public class UpdateExpenseDto
     {
-        public int Id { get; set; } 
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public DateTime DayOfTransaction { get; set; }
 
+        public int UserId { get; set; }
         public int MonthID { get; set; }
-        public virtual Month Month { get; set; }
     }
 }

@@ -12,11 +12,21 @@ namespace WalletAPI.Entities
         private string _connectionString =
             "Server=(localdb)\\mssqllocaldb;Database=WalletDb;Trusted_Connection=True;";
         public DbSet<Month> Months { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Salary> Salaries { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Income> Incomes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .Property(x => x.Email)
+                .IsRequired();
+
+            modelBuilder.Entity<Role>()
+                .Property(x => x.Name)
+                .IsRequired();
+
             modelBuilder.Entity<Month>()
                 .Property(m => m.Name)
                 .IsRequired()
@@ -30,29 +40,29 @@ namespace WalletAPI.Entities
                 .Property(m => m.EndOfTheMonth)
                 .IsRequired();
 
-            modelBuilder.Entity<Payment>()
+            modelBuilder.Entity<Expense>()
                 .Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(40);
 
-            modelBuilder.Entity<Payment>()
+            modelBuilder.Entity<Expense>()
                 .Property(p => p.DayOfTransaction)
                 .IsRequired();
 
-            modelBuilder.Entity<Payment>()
+            modelBuilder.Entity<Expense>()
                 .Property(p => p.Amount)
                 .IsRequired();
 
-            modelBuilder.Entity<Salary>()
+            modelBuilder.Entity<Income>()
                 .Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            modelBuilder.Entity<Salary>()
+            modelBuilder.Entity<Income>()
                 .Property(p => p.DayOfTransaction)
                 .IsRequired();
 
-            modelBuilder.Entity<Salary>()
+            modelBuilder.Entity<Income>()
                 .Property(p => p.Amount)
                 .IsRequired();
         }
